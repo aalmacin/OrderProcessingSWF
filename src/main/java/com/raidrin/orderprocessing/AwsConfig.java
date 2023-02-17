@@ -2,22 +2,39 @@ package com.raidrin.orderprocessing;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleworkflow.AmazonSimpleWorkflow;
-import com.amazonaws.services.simpleworkflow.AmazonSimpleWorkflowClientBuilder;
+import com.amazonaws.services.simpleworkflow.AmazonSimpleWorkflowClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AwsConfig {
+
+    @Value("${aws.access.key}")
+    private String accessKey;
+
+    @Value("${aws.secret.key}")
+    private String secretKey;
+
+    @Value("${aws.region}")
+    private String regionName;
+
+    @Value("${swf.domain}")
+    public String domain;
+
+    @Value("${swf.taskList}")
+    public String taskList;
+
     @Bean
-    public AmazonSimpleWorkflow amazonSimpleWorkflow() {
-        String accessKey = "your_access_key";
-        String secretKey = "your_secret_key";
-        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
-        return AmazonSimpleWorkflowClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-                .withRegion("us-east-1")
-                .build();
+    public AmazonSimpleWorkflow swfClient() {
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
+        AmazonSimpleWorkflowClient swf = new AmazonSimpleWorkflowClient(awsCreds);
+        Region region = Region.getRegion(Regions.fromName(regionName));
+        swf.setRegion(region);
+        return swf;
     }
 
 }

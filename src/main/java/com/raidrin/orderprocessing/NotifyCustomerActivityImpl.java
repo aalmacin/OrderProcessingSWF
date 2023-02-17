@@ -5,29 +5,26 @@ import com.amazonaws.services.simpleworkflow.flow.annotations.ActivityRegistrati
 import com.amazonaws.services.simpleworkflow.flow.core.Promise;
 import org.springframework.stereotype.Component;
 
-import java.util.Scanner;
+import java.util.Random;
 
 @Component
 @Activities(version = "1.0")
 @ActivityRegistrationOptions(defaultTaskScheduleToStartTimeoutSeconds = 300, defaultTaskStartToCloseTimeoutSeconds = 10)
-public class ReceiveOrderActivityImpl implements ReceiveOrderActivity {
+public class NotifyCustomerActivityImpl implements NotifyCustomerActivity {
 
     @Override
-    public Promise<String> receiveOrder() {
-        // prompt the user to enter order information
-        System.out.println("Please enter your order information:");
-        Scanner scanner = new Scanner(System.in);
-        String order = scanner.nextLine();
-
+    public Promise<Void> notifyCustomer(String customer) {
         // simulate a random processing time
-        int delay = 500; // 500ms delay
+        Random random = new Random();
+        int delay = random.nextInt(1000) + 500; // random delay between 500ms and 1500ms
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        return Promise.asPromise(order);
+        // notify the customer and return a void promise
+        return Promise.asPromise(null);
     }
 
 }
