@@ -1,10 +1,14 @@
 package com.raidrin.orderprocessing;
 
 import com.amazonaws.services.simpleworkflow.flow.annotations.Execute;
+import com.amazonaws.services.simpleworkflow.flow.annotations.Workflow;
+import com.amazonaws.services.simpleworkflow.flow.annotations.WorkflowRegistrationOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
+@Workflow
+@WorkflowRegistrationOptions(defaultExecutionStartToCloseTimeoutSeconds = 3600, defaultTaskStartToCloseTimeoutSeconds = 60)
 @Component
 public class OrderProcessingWorkflowImpl implements OrderProcessingWorkflow {
 

@@ -22,11 +22,9 @@ public class AwsConfig {
     @Value("${aws.region}")
     private String regionName;
 
-    @Value("${swf.domain}")
-    public String domain;
+    public String domain = "OrderProcessingDomain";
 
-    @Value("${swf.taskList}")
-    public String taskList;
+    public String taskList = "OrderProcessingTaskList";
 
     @Bean
     public AmazonSimpleWorkflow swfClient() {

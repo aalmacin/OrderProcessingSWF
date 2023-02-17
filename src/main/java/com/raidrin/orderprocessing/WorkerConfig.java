@@ -3,30 +3,33 @@ package com.raidrin.orderprocessing;
 import com.amazonaws.services.simpleworkflow.AmazonSimpleWorkflow;
 import com.amazonaws.services.simpleworkflow.flow.ActivityWorker;
 import com.amazonaws.services.simpleworkflow.flow.WorkflowWorker;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class WorkerConfig {
 
-    @Autowired
-    private AmazonSimpleWorkflow swfClient;
+    private final AmazonSimpleWorkflow swfClient;
 
-    @Autowired
-    private ReceiveOrderActivity receiveOrderActivity;
+    private final ReceiveOrderActivity receiveOrderActivity;
 
-    @Autowired
-    private ValidateOrderActivity validateOrderActivity;
+    private final ValidateOrderActivity validateOrderActivity;
 
-    @Autowired
-    private ChargeCustomerActivity chargeCustomerActivity;
+    private final ChargeCustomerActivity chargeCustomerActivity;
 
-    @Autowired
-    private NotifyCustomerActivity notifyCustomerActivity;
+    private final NotifyCustomerActivity notifyCustomerActivity;
 
-    @Autowired
+    final
     AwsConfig awsConfig;
+
+    public WorkerConfig(AmazonSimpleWorkflow swfClient, ReceiveOrderActivity receiveOrderActivity, ValidateOrderActivity validateOrderActivity, ChargeCustomerActivity chargeCustomerActivity, NotifyCustomerActivity notifyCustomerActivity, AwsConfig awsConfig) {
+        this.swfClient = swfClient;
+        this.receiveOrderActivity = receiveOrderActivity;
+        this.validateOrderActivity = validateOrderActivity;
+        this.chargeCustomerActivity = chargeCustomerActivity;
+        this.notifyCustomerActivity = notifyCustomerActivity;
+        this.awsConfig = awsConfig;
+    }
 
     @Bean
     public ActivityWorker activityWorker() {
